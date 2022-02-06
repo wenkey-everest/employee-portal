@@ -1,8 +1,10 @@
 package com.everest.employeeportal.repository;
 
+import com.everest.employeeportal.models.Address;
 import com.everest.employeeportal.models.Employee;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +39,10 @@ public class EmployeeRepo {
          throw new RuntimeException("employee id not in the database");
    }
 
-  public Employee deleteEmployee(Long empId){
+  public String deleteEmployee(Long empId){
       try {
-         return employeeMap.remove(empId);
+          employeeMap.remove(empId);
+         return "Deleted Successfully";
       }catch (Exception e){
          throw new RuntimeException("employee id not in database");
       }
