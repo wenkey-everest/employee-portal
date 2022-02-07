@@ -2,7 +2,11 @@ package com.everest.employeeportal.controller;
 
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.repository.EmployeeRepo;
+import com.everest.employeeportal.services.EmployeeService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,29 +15,31 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeRepo employeeRepo;
+    private EmployeeService employeeService;
 
     @GetMapping("/")
    public List<Employee> getAllEmployee(){
-        return List.of();
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Long empId){
-        return null;
+        return employeeService.getEmployeeById(empId);
     }
+
     @PostMapping("/")
-    public Employee createEmployee(@RequestBody Employee employee){
-        return null;
+    public ResponseEntity<String> createEmployee(@RequestBody Employee employee){
+        return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.CREATED);
     }
-    @PutMapping(name = "/{empId}")
-    public Employee updateEmployee(@PathVariable("empId") Long empId ,Employee employee){
-        return null;
+
+    @PutMapping("/{empId}")
+    public ResponseEntity<String> updateEmployee(@PathVariable("empId") Long empId , @RequestBody Employee employee){
+        return new ResponseEntity<>(employeeService.updateEmployee(employee, empId), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{empId}")
-    public Employee deleteEmployee(@PathVariable(name = "empId") Long empId){
-        return null;
+    public ResponseEntity<String> deleteEmployee(@PathVariable(name = "empId") Long empId){
+        return new ResponseEntity<>(employeeService.deleteEmployee(empId),HttpStatus.OK) ;
     }
 
 }
