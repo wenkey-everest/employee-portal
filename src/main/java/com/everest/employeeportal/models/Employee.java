@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Setter
 @Getter
 @AllArgsConstructor
 public class Employee {
-    private Long empID;
+    private Long empId;
     private String name;
     private String everestEmailId;
     private String password;

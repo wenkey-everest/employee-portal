@@ -1,5 +1,6 @@
 package com.everest.employeeportal.controller;
 
+import com.everest.employeeportal.models.Address;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.repository.EmployeeRepo;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,10 @@ public class EmployeeController {
    public List<Employee> getAllEmployee(){
         return employeeRepo.getAllEmployee();
     }
+
     @GetMapping("/{empId}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("empId") Long empId){
-        return new ResponseEntity<Employee>(employeeRepo.getEmployeeById(empId), HttpStatus.OK);
+    public ResponseEntity<List<Employee>> getEmployeeById(@PathVariable("empId") Long empId){
+        return new ResponseEntity<List<Employee>>(employeeRepo.getEmployeeById(empId), HttpStatus.OK);
     }
 
     @PostMapping("/")
