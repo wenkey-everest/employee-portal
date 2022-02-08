@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class PermanentAddress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long perId;
 
     @Column(name = "per_addressline1")

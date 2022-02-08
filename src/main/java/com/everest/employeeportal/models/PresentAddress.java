@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class PresentAddress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long preId;
     @Column(name = "pre_addressline1")
     private String addressLine1;

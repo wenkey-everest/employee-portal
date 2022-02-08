@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
 
+
     @Modifying
     @Transactional
     @Query(value = "delete from employee_details", nativeQuery = true)
