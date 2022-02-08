@@ -30,7 +30,7 @@ public class EmployeeService{
     public String createEmployee(Employee employee){
         employeeRepo.save(new Employee(employee.getEmpId(), employee.getName(), employee.getEverestEmailId()
         ,employee.getPassword(), employee.getPersonalEmailId(), employee.getDateOfBirth(), employee.getDateOfJoin()
-        ,employee.getDesignation(),employee.getExperience(),employee.getBio()));
+        ,employee.getDesignation(),employee.getExperience(),employee.getBio(), employee.getPresentAddress(), employee.getPermanentAddress()));
         return "Inserted Successfully";
     }
 
@@ -38,7 +38,7 @@ public class EmployeeService{
         if(employeeRepo.findById(empId).isPresent()) {
             employeeRepo.save(new Employee(empId, employee.getName(), employee.getEverestEmailId()
                     , employee.getPassword(), employee.getPersonalEmailId(), employee.getDateOfBirth(), employee.getDateOfJoin()
-                    , employee.getDesignation(), employee.getExperience(), employee.getBio()));
+                    , employee.getDesignation(), employee.getExperience(), employee.getBio(), employee.getPresentAddress(), employee.getPermanentAddress()));
             return "updated Successfully";
         }
         throw new EmployeeNotFoundException("employee Id is not present");

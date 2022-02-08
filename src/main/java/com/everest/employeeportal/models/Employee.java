@@ -45,13 +45,13 @@ public class Employee {
     @Column(name = "bio")
     private String bio;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "addId", referencedColumnName = "empId")
-//    private Address presentAddress;
-//
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "addId", referencedColumnName = "empId")
-//    private Address permanentAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "presentaddress", referencedColumnName = "preId")
+    private PresentAddress presentAddress;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "permanentaddress", referencedColumnName = "perId")
+    private PermanentAddress permanentAddress;
 
     public Employee() {
     }
