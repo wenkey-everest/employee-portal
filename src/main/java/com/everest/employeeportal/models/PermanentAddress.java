@@ -35,9 +35,6 @@ public class PermanentAddress {
     @Column(name = "per_country")
     private String country;
 
-    @OneToOne(mappedBy = "permanentAddress")
-    private Employee employee;
-
     public PermanentAddress() {
     }
 }

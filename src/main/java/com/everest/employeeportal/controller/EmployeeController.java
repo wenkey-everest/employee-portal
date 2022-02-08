@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -38,8 +39,12 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{empId}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable(name = "empId") Long empId){
-        return new ResponseEntity<>(employeeService.deleteEmployee(empId),HttpStatus.OK) ;
+    public ResponseEntity<String> deleteEmployee(@PathVariable("empId") Long empId) {
+        return new ResponseEntity<>(employeeService.deleteEmployee(empId), HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteEmployee(){
+        return  new ResponseEntity<>(employeeService.truncateEmployeeAddress(), HttpStatus.OK);
+    }
 }

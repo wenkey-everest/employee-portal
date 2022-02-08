@@ -34,9 +34,6 @@ public class PresentAddress {
     @Column(name = "pre_country")
     private String country;
 
-    @OneToOne(mappedBy = "presentAddress")
-    private Employee employee;
-
     public PresentAddress() {
     }
 }

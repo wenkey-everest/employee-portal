@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,9 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class EmployeeService{
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final EmployeeRepo employeeRepo;
 
@@ -52,6 +57,11 @@ public class EmployeeService{
             return "deleted successfully";
         }
         throw new EmployeeNotFoundException("employee Id is not present");
+    }
+
+    public String truncateEmployeeAddress(){
+        employeeRepo.truncateDate();
+        return "Data is erased from the employee table";
     }
 
 }
