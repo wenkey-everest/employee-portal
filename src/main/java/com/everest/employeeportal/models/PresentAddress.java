@@ -16,6 +16,7 @@ public class PresentAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long preId;
+
     @Column(name = "pre_addressline1")
     private String addressLine1;
 
@@ -34,7 +35,7 @@ public class PresentAddress {
     @Column(name = "pre_country")
     private String country;
 
-    @OneToOne(mappedBy = "presentAddress")
+    @OneToOne(mappedBy = "presentAddress", cascade = CascadeType.ALL)
     private Employee employee;
 
     public PresentAddress() {
