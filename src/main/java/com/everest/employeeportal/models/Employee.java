@@ -2,24 +2,28 @@ package com.everest.employeeportal.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Setter
 @Getter
-@Entity
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "Employee_details")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "everestemailid")
     private String everestEmailId;
@@ -53,6 +57,4 @@ public class Employee {
     @JoinColumn(name = "permanentaddress", referencedColumnName = "perId")
     private PermanentAddress permanentAddress;
 
-    public Employee() {
-    }
 }

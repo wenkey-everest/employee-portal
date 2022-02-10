@@ -2,12 +2,14 @@ package com.everest.employeeportal.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "permanent_address")
@@ -35,6 +37,4 @@ public class PermanentAddress {
     @Column(name = "per_country")
     private String country;
 
-    public PermanentAddress() {
-    }
 }

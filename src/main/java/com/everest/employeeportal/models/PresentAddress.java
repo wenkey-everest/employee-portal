@@ -2,12 +2,14 @@ package com.everest.employeeportal.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "present_address")
@@ -15,6 +17,7 @@ public class PresentAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long preId;
     @Column(name = "pre_addressline1")
     private String addressLine1;
@@ -34,6 +37,4 @@ public class PresentAddress {
     @Column(name = "pre_country")
     private String country;
 
-    public PresentAddress() {
-    }
 }

@@ -1,22 +1,19 @@
 package com.everest.employeeportal.controller;
 
 import com.everest.employeeportal.models.Employee;
-import com.everest.employeeportal.repository.EmployeeRepo;
 import com.everest.employeeportal.services.EmployeeService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @GetMapping("/")
    public List<Employee> getAllEmployee(){
@@ -47,4 +44,10 @@ public class EmployeeController {
     public ResponseEntity<String> deleteEmployee(){
         return  new ResponseEntity<>(employeeService.truncateEmployeeAddress(), HttpStatus.OK);
     }
+
+    @GetMapping("/api/employee")
+    public ResponseEntity<List<Employee>> searchByName(@RequestParam(name = "firstName") String firstName, @RequestParam(name = "lastName") String lastName){
+        return new ResponseEntity<>(employeeService.searchByName(firstName, lastName), HttpStatus.OK);
+    }
+
 }
