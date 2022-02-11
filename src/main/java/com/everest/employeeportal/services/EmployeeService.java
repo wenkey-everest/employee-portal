@@ -4,6 +4,8 @@ import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.repository.EmployeeRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ public class EmployeeService {
 
     private final EmployeeRepo employeeRepo;
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepo.findAll(Sort.by(Sort.Direction.ASC, "firstName").and(Sort.by(Sort.Direction.ASC,"dateOfJoin")));
+    public Page<Employee> getAllEmployees() {
+        return employeeRepo.findAll(PageRequest.of(0,20));
     }
 
     public Employee getEmployeeById(Long empId){
@@ -57,8 +59,21 @@ public class EmployeeService {
     }
 
     public List<Employee> searchByName(String firstName, String lastName){
-
         return employeeRepo.findByName(firstName, lastName);
+    }
+
+    public Page<Employee> getSortBy(String sortProperty){
+        String[] propSplit = sortProperty.split(":");
+        Sort sortByProperty =Sort.by(Sort.Direction.valueOf(propSplit[1]), propSplit[0]);
+        return employeeRepo.findAll(PageRequest.of(0, 20, sortByProperty));
+    }
+
+    public Page<Employee> getSortBy(String firstNameProp, String dateOfJoin){
+        String[] firstNameSplit = firstNameProp.split(":");
+        String[] dateOfJoinSplit = dateOfJoin.split(":");
+        Sort sortByProperty1 = Sort.by(Sort.Direction.valueOf(firstNameSplit[1]), firstNameSplit[0]);
+        Sort sortByProperty2 = Sort.by(Sort.Direction.valueOf(dateOfJoinSplit[1]), dateOfJoinSplit[0]);
+        return employeeRepo.findAll(PageRequest.of(0, 20,sortByProperty1.and(sortByProperty2)));
     }
 
 }
