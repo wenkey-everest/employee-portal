@@ -20,7 +20,6 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-
     @NotBlank(message = "first name is mandatory")
     @Column(name = "first_name")
     private String firstName;
@@ -55,7 +54,6 @@ public class Employee {
     @Column(name = "bio")
     private String bio;
 
-    @NotBlank(message = "present address is mandatory")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "present_address", referencedColumnName = "present_id")
     private PresentAddress presentAddress;
