@@ -17,7 +17,7 @@ public class PermanentAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long permanet_id;
+    private Long permanent_id;
 
     @Column(name = "per_addressline1")
     private String addressLine1;
