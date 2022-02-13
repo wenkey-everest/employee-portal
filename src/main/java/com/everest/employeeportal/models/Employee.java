@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
@@ -13,31 +14,36 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Employee_details")
+@Table(name = "employee_details")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
+
+    @NotBlank(message = "first name is mandatory")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank(message = "last name is mandatory")
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "everestemailid")
+    @NotBlank(message = "email is mandatory")
+    @Column(name = "everest_email_id")
     private String everestEmailId;
 
+    @NotBlank(message = "password is mandatory")
     @Column(name = "password")
     private String password;
 
-    @Column(name = "personalemailid")
+    @Column(name = "personal_email_id")
     private String personalEmailId;
 
-    @Column(name = "dateofbirth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "dateofjoin")
+    @Column(name = "date_of_join")
     private LocalDate dateOfJoin;
 
     @Column(name = "designation")
@@ -49,12 +55,13 @@ public class Employee {
     @Column(name = "bio")
     private String bio;
 
+    @NotBlank(message = "present address is mandatory")
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "presentaddress", referencedColumnName = "preId")
+    @JoinColumn(name = "present_address", referencedColumnName = "present_id")
     private PresentAddress presentAddress;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "permanentaddress", referencedColumnName = "perId")
+    @JoinColumn(name = "permanent_address", referencedColumnName = "permanent_id")
     private PermanentAddress permanentAddress;
 
 }

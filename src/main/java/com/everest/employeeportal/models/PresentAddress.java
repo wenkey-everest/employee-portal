@@ -18,7 +18,7 @@ public class PresentAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long preId;
+    private Long present_id;
     @Column(name = "pre_addressline1")
     private String addressLine1;
 

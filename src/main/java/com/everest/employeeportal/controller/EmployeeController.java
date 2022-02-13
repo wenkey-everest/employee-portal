@@ -4,13 +4,10 @@ import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +17,12 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("/api/allEmployees")
+    @GetMapping("/api/Employees")
     public Page<Employee> getAllEmployee(){
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping("/api/sortAllEmployees")
+    @GetMapping("/api/sortEmployees")
    public Page<Employee> sortAllEmployees(@RequestParam(name="sortByProperty1", required = false) String sortByProperty1,
                                         @RequestParam(name="sortByProperty2", required = false) Optional<String> sortByProperty2 ){
         if(sortByProperty2.isPresent()){
@@ -34,7 +31,7 @@ public class EmployeeController {
         return employeeService.getSortBy(sortByProperty1);
     }
 
-    @GetMapping("/api/getEmployeeBy/{empId}")
+    @GetMapping("/api/EmployeeBy/{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Long empId){
         return employeeService.getEmployeeById(empId);
     }
@@ -49,17 +46,17 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.updateEmployee(employee, empId), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/api/deleteEmployee/{empId}")
+    @DeleteMapping("/api/deleteEmployeeBy/{empId}")
     public ResponseEntity<String> deleteEmployee(@PathVariable("empId") Long empId) {
         return new ResponseEntity<>(employeeService.deleteEmployee(empId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/deleteAllEmployees")
+    @DeleteMapping("/api/deleteEmployees")
     public ResponseEntity<String> deleteEmployee(){
         return  new ResponseEntity<>(employeeService.truncateEmployeeAddress(), HttpStatus.OK);
     }
 
-    @GetMapping("/api/SearchEmployee")
+    @GetMapping("/api/SearchEmployeeBy")
     public ResponseEntity<List<Employee>> searchByName(@RequestParam(name = "firstName") String firstName, @RequestParam(name = "lastName") String lastName){
         return new ResponseEntity<>(employeeService.searchByName(firstName, lastName), HttpStatus.OK);
     }
