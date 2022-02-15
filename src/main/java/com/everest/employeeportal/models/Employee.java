@@ -14,25 +14,23 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "employee_details")
+@Table(name = "details")
 public class Employee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-    @NotBlank(message = "first name is mandatory")
+    @NotBlank(message = "First name should not be empty")
     @Column(name = "first_name")
     private String firstName;
 
-    @NotBlank(message = "last name is mandatory")
     @Column(name = "last_name")
     private String lastName;
 
-    @NotBlank(message = "email is mandatory")
     @Column(name = "everest_email_id")
     private String everestEmailId;
 
-    @NotBlank(message = "password is mandatory")
     @Column(name = "password")
     private String password;
 
@@ -55,11 +53,11 @@ public class Employee {
     private String bio;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "present_address", referencedColumnName = "present_id")
-    private PresentAddress presentAddress;
+    @JoinColumn(name = "present_address", referencedColumnName = "id")
+    private Address presentAddress;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "permanent_address", referencedColumnName = "permanent_id")
-    private PermanentAddress permanentAddress;
+    @JoinColumn(name = "permanent_address", referencedColumnName = "id")
+    private Address permanentAddress;
 
 }

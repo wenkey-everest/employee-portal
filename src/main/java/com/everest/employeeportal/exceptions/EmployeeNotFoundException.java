@@ -1,7 +1,9 @@
 package com.everest.employeeportal.exceptions;
 
 public class EmployeeNotFoundException extends RuntimeException{
+
     public EmployeeNotFoundException() {
-        super();
+        super("Employee not found with Id");
+
     }
 }

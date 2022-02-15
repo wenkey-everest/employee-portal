@@ -11,8 +11,13 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
-public class EmployeeAddress {
+@Entity
+@Table(name = "address")
+public class Address {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "address_line_1")
     private String addressLine1;
