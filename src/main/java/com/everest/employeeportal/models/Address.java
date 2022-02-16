@@ -13,6 +13,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
+@Inheritance
+@DiscriminatorColumn(name = "address_type", discriminatorType = DiscriminatorType.STRING)
 public class Address {
 
     @Id
@@ -39,3 +41,4 @@ public class Address {
 
 
 }
+
