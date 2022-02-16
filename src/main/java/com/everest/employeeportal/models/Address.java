@@ -5,12 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-<<<<<<< HEAD
-@Setter
-=======
 import javax.persistence.*;
 
->>>>>>> WIP-JPA
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,15 +23,11 @@ public class Address {
 
     @Column(name = "address_line_1")
     private String addressLine1;
-<<<<<<< HEAD
-    private String AddressLine2;
-=======
 
     @Column(name = "address_line_2")
     private String addressLine2;
 
     @Column(name = "city")
->>>>>>> WIP-JPA
     private String city;
 
     @Column(name = "state")
