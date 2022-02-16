@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,18 +23,15 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("")
-    public Page<Employee> getAllEmployee(){
-        return employeeService.getAllEmployees();
-    }
-
-    @GetMapping("/sort")
+    @GetMapping("/")
    public Page<Employee> sortAllEmployees(@RequestParam(name="sortByProperty1", required = false) String sortByProperty1,
-                                        @RequestParam(name="sortByProperty2", required = false) Optional<String> sortByProperty2 ){
-        if(sortByProperty2.isPresent()){
-            return employeeService.getSortBy(sortByProperty1,sortByProperty2.get());
+                                        @RequestParam(name="sortByProperty2", required = false) String sortByProperty2 ){
+        if(sortByProperty2!=null){
+            return employeeService.getSortBy(sortByProperty1,sortByProperty2);
+        }if(sortByProperty1!= null) {
+            return employeeService.getSortBy(sortByProperty1);
         }
-        return employeeService.getSortBy(sortByProperty1);
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{empId}")
@@ -59,8 +57,8 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.deleteEmployee(empId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteEmployee(){
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteAllEmployees(){
         return  new ResponseEntity<>(employeeService.truncateEmployeeDetails(), HttpStatus.OK);
     }
 
