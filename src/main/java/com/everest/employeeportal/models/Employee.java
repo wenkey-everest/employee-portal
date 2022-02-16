@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
@@ -21,7 +20,6 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-    @NotBlank(message = "First name should not be empty")
     @Column(name = "first_name")
     private String firstName;
 
@@ -54,10 +52,10 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "present_address", referencedColumnName = "id")
-    private Address presentAddress;
+    private Present presentAddress;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "permanent_address", referencedColumnName = "id")
-    private Address permanentAddress;
+    private Permanent permanentAddress;
 
 }

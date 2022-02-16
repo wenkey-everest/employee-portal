@@ -6,5 +6,5 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("permanent")
 public class Permanent extends Address {
-
+    
 }

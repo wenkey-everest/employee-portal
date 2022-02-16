@@ -5,13 +5,10 @@ import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,9 +22,8 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Long empId){
-        if(employeeRepository.findById(empId).isPresent())
-            return employeeRepository.findById(empId).get();
-        throw new EmployeeNotFoundException();
+        return employeeRepository.findById(empId)
+                .orElseThrow(EmployeeNotFoundException::new);
     }
 
     public Employee createEmployee(Employee employee){
@@ -36,7 +32,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Employee employee, Long empId){
-        if(employeeRepository.findById(empId).isPresent()) {
+        if(employeeRepository.existsById(empId)) {
             employee.setEmpId(empId);
             return employeeRepository.save(employee);
         }
@@ -54,6 +50,6 @@ public class EmployeeService {
     }
 
     public Page<Employee> searchEmployeeByName(String name, Pageable pageable){
-        return employeeRepository.findByName(name,pageable);
+        return employeeRepository.findByName(name, pageable);
     }
 }

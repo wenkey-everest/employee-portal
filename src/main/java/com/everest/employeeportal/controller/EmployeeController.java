@@ -26,7 +26,7 @@ public class EmployeeController {
 
     @GetMapping("/{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Long empId){
-        return employeeService.getEmployeeById(empId);
+            return employeeService.getEmployeeById(empId);
     }
 
     @PostMapping("")
@@ -40,7 +40,11 @@ public class EmployeeController {
 
     @PutMapping("/{empId}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee(@PathVariable("empId") Long empId , @RequestBody Employee employee){
+    public Employee updateEmployee(@PathVariable("empId") Long empId , @RequestBody @Validated Employee employee,
+                                   BindingResult result){
+        if(result.hasErrors()){
+            throw new RequiredAllParamException();
+        }
         return employeeService.updateEmployee(employee, empId);
     }
 
