@@ -1,20 +1,16 @@
 package com.everest.employeeportal.controller;
 
-import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
 import com.everest.employeeportal.exceptions.RequiredAllParamException;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,15 +19,9 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("/")
-   public Page<Employee> sortAllEmployees(@RequestParam(name="sortByProperty1", required = false) String sortByProperty1,
-                                        @RequestParam(name="sortByProperty2", required = false) String sortByProperty2 ){
-        if(sortByProperty2!=null){
-            return employeeService.getSortBy(sortByProperty1,sortByProperty2);
-        }if(sortByProperty1!= null) {
-            return employeeService.getSortBy(sortByProperty1);
-        }
-        return employeeService.getAllEmployees();
+    @GetMapping("")
+   public Page<Employee> getAllEmployees(Pageable pageable){
+        return employeeService.getAllEmployees(pageable);
     }
 
     @GetMapping("/{empId}")
@@ -40,16 +30,18 @@ public class EmployeeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> createEmployee(@RequestBody @Validated Employee employee, BindingResult result){
+    @ResponseStatus(HttpStatus.CREATED)
+    public Employee createEmployee(@RequestBody @Validated Employee employee, BindingResult result){
         if(result.hasErrors()){
             throw new RequiredAllParamException();
         }
-        return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.CREATED);
+        return employeeService.createEmployee(employee);
     }
 
     @PutMapping("/{empId}")
-    public ResponseEntity<String> updateEmployee(@PathVariable("empId") Long empId , @RequestBody Employee employee){
-        return new ResponseEntity<>(employeeService.updateEmployee(employee, empId), HttpStatus.ACCEPTED);
+    @ResponseStatus(HttpStatus.OK)
+    public Employee updateEmployee(@PathVariable("empId") Long empId , @RequestBody Employee employee){
+        return employeeService.updateEmployee(employee, empId);
     }
 
     @DeleteMapping("/{empId}")
@@ -63,8 +55,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/search")
-    public List<Employee> searchEmployee(@RequestParam("name") String name){
-        return employeeService.searchEmployeeByName(name);
+    public Page<Employee> searchEmployee(@RequestParam("name") String name, Pageable pageable){
+        return employeeService.searchEmployeeByName(name, pageable);
     }
 
 }
