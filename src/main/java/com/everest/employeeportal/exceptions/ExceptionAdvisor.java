@@ -31,4 +31,13 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
         body.put("web link", webRequest.getDescription(true));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(EmailIsRegisteredAlreadyException.class)
+    public ResponseEntity<Object> employeeExceptionHandler(EmailIsRegisteredAlreadyException ex, WebRequest webRequest){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+        body.put("web link", webRequest.getDescription(true));
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }

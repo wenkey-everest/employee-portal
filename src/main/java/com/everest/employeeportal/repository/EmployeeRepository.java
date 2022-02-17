@@ -11,5 +11,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
     @Query("select e from Employee e where firstName like %?1% or lastName like %?1%")
     Page<Employee> findByName(String name, Pageable pageable);
 
+    Boolean existsByEverestEmailId(String everestEmailId);
 }
 
