@@ -21,22 +21,22 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "address_line_1")
+    @Column(name = "address_line_1", nullable = false)
     private String addressLine1;
 
     @Column(name = "address_line_2")
     private String addressLine2;
 
-    @Column(name = "city")
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "zipcode")
+    @Column(name = "zipcode",nullable = false)
     private int zipCode;
 
-    @Column(name = "country")
+    @Column(name = "country", nullable = false)
     private String country;
 
 

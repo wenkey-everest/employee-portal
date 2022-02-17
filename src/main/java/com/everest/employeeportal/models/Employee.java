@@ -21,42 +21,42 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "everest_email_id")
+    @Column(name = "everest_email_id", nullable = false)
     private String everestEmailId;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "personal_email_id")
+    @Column(name = "personal_email_id", nullable = false)
     private String personalEmailId;
 
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(name = "date_of_join")
+    @Column(name = "date_of_join", nullable = false)
     private LocalDate dateOfJoin;
 
-    @Column(name = "designation")
+    @Column(name = "designation", nullable = false)
     private String designation;
 
-    @Column(name = "experience")
+    @Column(name = "experience", nullable = false)
     private int experience;
 
-    @Column(name = "bio")
+    @Column(name = "bio", nullable = false)
     private String bio;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "present_address", referencedColumnName = "id")
+    @JoinColumn(name = "present_address", referencedColumnName = "id", nullable = false)
     private Present presentAddress;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "permanent_address", referencedColumnName = "id")
+    @JoinColumn(name = "permanent_address", referencedColumnName = "id", nullable = false)
     private Permanent permanentAddress;
 
 }
