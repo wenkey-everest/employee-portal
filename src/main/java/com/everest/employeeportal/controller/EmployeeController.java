@@ -12,6 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/employees")
@@ -49,13 +53,19 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{empId}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable("empId") Long empId) {
-        return new ResponseEntity<>(employeeService.deleteEmployee(empId), HttpStatus.OK);
+    public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", employeeService.deleteEmployee(empId));
+        body.put("Time", LocalDate.now());
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllEmployees(){
-        return  new ResponseEntity<>(employeeService.truncateEmployeeDetails(), HttpStatus.OK);
+    public ResponseEntity<Object> deleteAllEmployees(){
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", employeeService.truncateEmployeeDetails());
+        body.put("Time", LocalDate.now());
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     @GetMapping("/search")
