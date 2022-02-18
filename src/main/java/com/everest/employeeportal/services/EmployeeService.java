@@ -1,5 +1,6 @@
 package com.everest.employeeportal.services;
 
+import com.everest.employeeportal.exceptions.EmailIsRegisteredAlreadyException;
 import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.repository.EmployeeRepository;
@@ -27,6 +28,9 @@ public class EmployeeService {
     }
 
     public Employee createEmployee(Employee employee){
+        if(employeeRepository.existsByEverestEmailId(employee.getEverestEmailId())){
+            throw new EmailIsRegisteredAlreadyException();
+        }
        return employeeRepository.save(employee);
 
     }

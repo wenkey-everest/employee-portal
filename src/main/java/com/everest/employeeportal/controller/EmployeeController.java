@@ -1,16 +1,23 @@
 package com.everest.employeeportal.controller;
 
 import com.everest.employeeportal.exceptions.RequiredAllParamException;
+import com.everest.employeeportal.models.ApiResponse;
 import com.everest.employeeportal.models.Employee;
-import com.everest.employeeportal.services.EmployeeService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import com.everest.employeeportal.models.ResultPage;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.everest.employeeportal.services.EmployeeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,10 +27,11 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("")
-   public Page<Employee> getAllEmployees(Pageable pageable){
-        return employeeService.getAllEmployees(pageable);
-    }
+   public ResultPage getAllEmployees(Pageable pageable){
+        Page<Employee> page = employeeService.getAllEmployees(pageable);
+        return new ResultPage(page);
 
+    }
     @GetMapping("/{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Long empId){
             return employeeService.getEmployeeById(empId);
@@ -49,18 +57,21 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{empId}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable("empId") Long empId) {
-        return new ResponseEntity<>(employeeService.deleteEmployee(empId), HttpStatus.OK);
+    public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
+        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId), LocalDateTime.now());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> deleteAllEmployees(){
-        return  new ResponseEntity<>(employeeService.truncateEmployeeDetails(), HttpStatus.OK);
+    public ResponseEntity<Object> deleteAllEmployees(){
+        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails(), LocalDateTime.now());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public Page<Employee> searchEmployee(@RequestParam("name") String name, Pageable pageable){
-        return employeeService.searchEmployeeByName(name, pageable);
+    public ResultPage searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
+        Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
+        return new ResultPage(employeePage);
     }
 
 }
