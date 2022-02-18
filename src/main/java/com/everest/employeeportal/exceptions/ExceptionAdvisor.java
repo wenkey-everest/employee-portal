@@ -1,6 +1,7 @@
 package com.everest.employeeportal.exceptions;
 
 
+import com.everest.employeeportal.models.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,28 +18,19 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EmployeeNotFoundException.class)
     public ResponseEntity<Object> employeeExceptionHandler(EmployeeNotFoundException ex, WebRequest webRequest){
-            Map<String, Object> body = new LinkedHashMap<>();
-            body.put("timestamp", LocalDateTime.now());
-            body.put("message", ex.getMessage());
-            body.put("web link", webRequest.getDescription(true));
-            return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        ApiResponse apiResponse = new ApiResponse(ex.getMessage(), webRequest.getDescription(true));
+            return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(RequiredAllParamException.class)
     public ResponseEntity<Object> employeeExceptionHandler(RequiredAllParamException ex, WebRequest webRequest){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("web link", webRequest.getDescription(true));
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        ApiResponse apiResponse = new ApiResponse(ex.getMessage(), webRequest.getDescription(true));
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EmailIsRegisteredAlreadyException.class)
     public ResponseEntity<Object> employeeExceptionHandler(EmailIsRegisteredAlreadyException ex, WebRequest webRequest){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("web link", webRequest.getDescription(true));
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        ApiResponse apiResponse = new ApiResponse(ex.getMessage(), webRequest.getDescription(true));
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
 }

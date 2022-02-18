@@ -4,20 +4,17 @@ import com.everest.employeeportal.exceptions.RequiredAllParamException;
 import com.everest.employeeportal.models.ApiResponse;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.models.ResultPage;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import com.everest.employeeportal.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,13 +55,13 @@ public class EmployeeController {
 
     @DeleteMapping("/{empId}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
-        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId), LocalDateTime.now());
+        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<Object> deleteAllEmployees(){
-        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails(), LocalDateTime.now());
+        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
