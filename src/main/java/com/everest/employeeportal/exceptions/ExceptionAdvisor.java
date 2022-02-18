@@ -40,4 +40,5 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
         body.put("web link", webRequest.getDescription(true));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
 }

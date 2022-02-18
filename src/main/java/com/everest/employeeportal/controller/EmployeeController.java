@@ -1,6 +1,7 @@
 package com.everest.employeeportal.controller;
 
 import com.everest.employeeportal.exceptions.RequiredAllParamException;
+import com.everest.employeeportal.models.ApiResponse;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.models.ResultPage;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,22 +58,18 @@ public class EmployeeController {
 
     @DeleteMapping("/{empId}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", employeeService.deleteEmployee(empId));
-        body.put("Time", LocalDate.now());
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId), LocalDateTime.now());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<Object> deleteAllEmployees(){
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", employeeService.truncateEmployeeDetails());
-        body.put("Time", LocalDate.now());
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails(), LocalDateTime.now());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResultPage searchEmployee(@RequestParam("name") String name, Pageable pageable){
+    public ResultPage searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
         Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
         return new ResultPage(employeePage);
     }
