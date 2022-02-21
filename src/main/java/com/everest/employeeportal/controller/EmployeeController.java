@@ -1,6 +1,5 @@
 package com.everest.employeeportal.controller;
 
-import com.everest.employeeportal.exceptions.RequiredAllParamException;
 import com.everest.employeeportal.models.ApiResponse;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.models.ResultPage;
@@ -10,16 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/employees")
-public class EmployeeController {
+public class EmployeeController{
 
     private final EmployeeService employeeService;
 
@@ -36,20 +33,13 @@ public class EmployeeController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody @Validated Employee employee, BindingResult result){
-        if(result.hasErrors()){
-            throw new RequiredAllParamException();
-        }
+    public Employee createEmployee( @RequestBody @Validated Employee employee){
         return employeeService.createEmployee(employee);
     }
 
     @PutMapping("/{empId}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee(@PathVariable("empId") Long empId , @RequestBody @Validated Employee employee,
-                                   BindingResult result){
-        if(result.hasErrors()){
-            throw new RequiredAllParamException();
-        }
+    public Employee updateEmployee(@PathVariable("empId") Long empId , @Validated @RequestBody Employee employee){
         return employeeService.updateEmployee(employee, empId);
     }
 
@@ -65,6 +55,7 @@ public class EmployeeController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.FOUND)
     @GetMapping("/search")
     public ResultPage searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
         Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
