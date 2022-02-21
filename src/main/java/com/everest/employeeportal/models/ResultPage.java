@@ -20,7 +20,7 @@ public class ResultPage {
         this.totalElements = page.getTotalElements();
         this.totalPages = page.getTotalPages();
         this.pageSize = page.getSize();
-        this.currentPage = page.getNumber();
+        this.currentPage = page.getNumber()+1;
         this.hasNext = page.hasNext();
         this.hasPrevious = page.hasPrevious();
     }

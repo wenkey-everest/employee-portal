@@ -17,7 +17,7 @@ import javax.transaction.Transactional;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-
+    
     public Page<Employee> getAllEmployees(Pageable pageable) {
         return employeeRepository.findAll(pageable);
     }
