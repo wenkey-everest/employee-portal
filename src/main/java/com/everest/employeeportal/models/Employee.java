@@ -70,10 +70,10 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     @NotBlank(message = "present address is needed")
     @JoinColumn(name = "present_address", referencedColumnName = "id")
-    private Present presentAddress;
+    private Address presentAddress;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "permanent_address", referencedColumnName = "id")
-    private Permanent permanentAddress;
+    private Address permanentAddress;
 
 }

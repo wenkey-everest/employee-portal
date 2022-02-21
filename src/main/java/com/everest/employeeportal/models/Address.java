@@ -15,8 +15,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-@Inheritance
-@DiscriminatorColumn(name = "address_type", discriminatorType = DiscriminatorType.STRING)
 public class Address {
 
     @Id
