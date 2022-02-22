@@ -1,5 +1,6 @@
 package com.everest.employeeportal.controller;
 
+import com.everest.employeeportal.exceptions.RequiredRequestParamException;
 import com.everest.employeeportal.models.ApiResponse;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.models.ResultPage;
@@ -61,6 +62,9 @@ public class EmployeeController{
     @ResponseStatus(HttpStatus.FOUND)
     @GetMapping("/search")
     public ResultPage searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
+        if(name.isEmpty()){
+            throw new RequiredRequestParamException();
+        }
         Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
         return new ResultPage(employeePage);
     }

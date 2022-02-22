@@ -1,6 +1,7 @@
 package com.everest.employeeportal.controller;
 
 import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
+import com.everest.employeeportal.exceptions.RequiredRequestParamException;
 import com.everest.employeeportal.models.Address;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.services.EmployeeService;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = EmployeeController.class)
 @AutoConfigureMockMvc
-class EmployeeControllerTest {
+class EmployeeControllerTest{
 
  @Autowired
  private MockMvc mockMvc;
@@ -39,6 +40,7 @@ class EmployeeControllerTest {
 
  @Autowired
  private ObjectMapper objectMapper;
+
 
  @MockBean
  private EmployeeService employeeService;
@@ -50,13 +52,16 @@ class EmployeeControllerTest {
 
  @BeforeEach
  void setUp() {
-  employeeList = new ArrayList<>();
 
+  employeeList = new ArrayList<>();
   employee = new Employee(1L, "muni venkatesh", "Ganji", "muni.v.g@everest.engineering", "12345678", "wenkeygm@gmail.com",
           LocalDate.of(1999, 8, 14), LocalDate.of(2021, 8, 3), "software craftperson",
           0, "Its better not be pro in somethings", new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"),
           new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"));
   employeeList.add(employee);
+
+
+
  }
  @Test
  void shouldFetchAllEmployees() throws Exception {
@@ -167,7 +172,7 @@ class EmployeeControllerTest {
  }
 
  @Test
- void ShouldGetEmployeeOnSearch() throws Exception{
+ void ShouldGetEmployeeOnSearchByLastName() throws Exception{
   Page<Employee> employeePage = new PageImpl<>(employeeList);
   given(employeeService.searchEmployeeByName(eq("Ganji"),any(Pageable.class))).willReturn(employeePage);
 
@@ -179,4 +184,29 @@ class EmployeeControllerTest {
           .andExpect(jsonPath("$.data[0].password", is(employee.getPassword())));
 
  }
+ @Test
+ void ShouldGetEmployeeOnSearchByFirstName() throws Exception{
+  Page<Employee> employeePage = new PageImpl<>(employeeList);
+  given(employeeService.searchEmployeeByName(eq("muni venkatesh"),any(Pageable.class))).willReturn(employeePage);
+
+  mockMvc.perform(get("/api/employees/search")
+                  .content(objectMapper.writeValueAsString(employeePage.getPageable())).param("name", "muni venkatesh"))
+          .andExpect(status().isFound())
+          .andExpect(jsonPath("$.data[0].firstName", is(employee.getFirstName())))
+          .andExpect(jsonPath("$.data[0].everestEmailId", is(employee.getEverestEmailId())))
+          .andExpect(jsonPath("$.data[0].password", is(employee.getPassword())));
+
+ }
+
+ @Test
+ void ShouldGet404WhenNameParamIsAbsent() throws Exception{
+  Page<Employee> employeePage = new PageImpl<>(employeeList);
+  given(employeeService.searchEmployeeByName(eq("muni venkatesh"),any(Pageable.class))).willThrow(RequiredRequestParamException.class);
+
+  mockMvc.perform(get("/api/employees/search")
+                  .content(objectMapper.writeValueAsString(employeePage.getPageable())))
+          .andExpect(status().isBadRequest());
+
+ }
+
 }
