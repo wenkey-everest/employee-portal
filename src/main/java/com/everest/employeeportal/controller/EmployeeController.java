@@ -20,6 +20,7 @@ public class EmployeeController{
 
     private final EmployeeService employeeService;
 
+
     @GetMapping("")
    public ResultPage getAllEmployees(Pageable pageable){
         Page<Employee> page = employeeService.getAllEmployees(pageable);
@@ -45,13 +46,15 @@ public class EmployeeController{
 
     @DeleteMapping("/{empId}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
-        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId));
+        employeeService.deleteEmployee(empId);
+        ApiResponse apiResponse = new ApiResponse("Deleted employee with Id  "+empId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<Object> deleteAllEmployees(){
-        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails());
+        employeeService.truncateEmployeeDetails();
+        ApiResponse apiResponse = new ApiResponse("Deleted all employees");
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

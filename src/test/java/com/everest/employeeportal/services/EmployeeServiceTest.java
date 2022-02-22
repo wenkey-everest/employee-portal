@@ -99,7 +99,6 @@ class EmployeeServiceTest {
         });
 
         then(employeeRepository).should(never()).save(any(Employee.class));
-        then(employeeRepository).should(never()).getById(employee.getEmpId());
     }
 
 }
