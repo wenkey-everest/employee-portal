@@ -5,12 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
@@ -48,13 +46,13 @@ public class Employee {
     private String personalEmailId;
 
     @Column(name = "date_of_birth")
-    @NotBlank(message = "Date of birth is needed")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Please provide a date.")
     private LocalDate dateOfBirth;
 
     @Column(name = "date_of_join")
-    @NotBlank(message = "Date of join is  needed")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Please provide a date.")
     private LocalDate dateOfJoin;
 
     @Column(name = "designation")
@@ -68,7 +66,6 @@ public class Employee {
     private String bio;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @NotBlank(message = "present address is needed")
     @JoinColumn(name = "present_address", referencedColumnName = "id")
     private Address presentAddress;
 

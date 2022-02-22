@@ -5,6 +5,7 @@ import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.models.ResultPage;
 import com.everest.employeeportal.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController{
 
     private final EmployeeService employeeService;
+
 
     @GetMapping("")
    public ResultPage getAllEmployees(Pageable pageable){
@@ -45,13 +47,15 @@ public class EmployeeController{
 
     @DeleteMapping("/{empId}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
-        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId));
+        employeeService.deleteEmployee(empId);
+        ApiResponse apiResponse = new ApiResponse("Deleted employee with Id  "+empId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<Object> deleteAllEmployees(){
-        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails());
+        employeeService.truncateEmployeeDetails();
+        ApiResponse apiResponse = new ApiResponse("Deleted all employees");
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

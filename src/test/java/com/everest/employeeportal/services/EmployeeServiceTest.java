@@ -23,6 +23,7 @@ import static org.mockito.Mockito.never;
 class EmployeeServiceTest {
 
     private EmployeeService employeeService;
+
     private EmployeeRepository employeeRepository;
 
     private Employee employee;
@@ -99,7 +100,6 @@ class EmployeeServiceTest {
         });
 
         then(employeeRepository).should(never()).save(any(Employee.class));
-        then(employeeRepository).should(never()).getById(employee.getEmpId());
     }
 
 }
