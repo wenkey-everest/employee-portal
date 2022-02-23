@@ -75,7 +75,7 @@ class EmployeeServiceTest {
 
         //act
         Employee updateEmployee = employeeService.updateEmployee(employee, employee.getEmpId());
-        Employee employeeById = employeeService.getEmployeeById(employee.getEmpId());
+        Employee  employeeById = employeeService.getEmployeeById(employee.getEmpId()).get();
 
         //assert
         assertThat(updateEmployee).isNotNull();

@@ -23,13 +23,8 @@ public class EmployeeService {
         return employeeRepository.findAll(pageable);
     }
 
-    public Employee getEmployeeById(Long empId){
-        Optional<Employee> employee = employeeRepository.findById(empId);
-            if(employee.isPresent()){
-                return employee.get();
-            }
-        throw new EmployeeNotFoundException(empId);
-
+    public Optional<Employee> getEmployeeById(Long empId){
+        return employeeRepository.findById(empId);
     }
 
     public Employee createEmployee(Employee employee){
@@ -49,7 +44,7 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long empId){
-            employeeRepository.deleteById(empId);
+        employeeRepository.deleteById(empId);
     }
 
     public void truncateEmployeeDetails(){

@@ -29,14 +29,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@WebMvcTest(controllers = EmployeeController.class)
 @AutoConfigureMockMvc
-class EmployeeControllerTest{
+@WebMvcTest(controllers = EmployeeController.class)
+class EmployeeControllerTest {
 
  @Autowired
  private MockMvc mockMvc;
-
 
  @Autowired
  private ObjectMapper objectMapper;
@@ -54,13 +52,11 @@ class EmployeeControllerTest{
  void setUp() {
 
   employeeList = new ArrayList<>();
-  employee = new Employee(1L, "muni venkatesh", "Ganji", "muni.v.g@everest.engineering", "12345678", "wenkeygm@gmail.com",
+  employee = new Employee(null, "muni venkatesh", "Ganji", "muni.v.g@everest.engineering", "12345678", "wenkeygm@gmail.com",
           LocalDate.of(1999, 8, 14), LocalDate.of(2021, 8, 3), "software craftperson",
           0, "Its better not be pro in somethings", new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"),
           new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"));
   employeeList.add(employee);
-
-
 
  }
  @Test
@@ -75,13 +71,10 @@ class EmployeeControllerTest{
           .andExpect(jsonPath("$.pageSize", is(employeePage.getSize())));
  }
 
-
-
-
  @Test
  void ShouldFetchEmployeeById() throws Exception {
 
-  given(employeeService.getEmployeeById(employee.getEmpId())).willReturn(employee);
+  given(employeeService.getEmployeeById(employee.getEmpId()).get()).willReturn(employee);
 
   mockMvc.perform(get("/api/employees/{id}", employee.getEmpId()))
           .andExpect(status().isOk())
