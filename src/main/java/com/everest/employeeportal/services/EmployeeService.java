@@ -2,6 +2,7 @@ package com.everest.employeeportal.services;
 
 import com.everest.employeeportal.exceptions.EmailIsRegisteredAlreadyException;
 import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
+import com.everest.employeeportal.exceptions.RequiredRequestParamException;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class EmployeeService {
     }
 
     public Optional<Employee> getEmployeeById(Long empId){
-        return employeeRepository.findById(empId);
+            return employeeRepository.findById(empId);
     }
 
     public Employee createEmployee(Employee employee){
@@ -52,6 +53,9 @@ public class EmployeeService {
     }
 
     public Page<Employee> searchEmployeeByName(String name, Pageable pageable){
+        if(name.isEmpty()){
+            throw new RequiredRequestParamException();
+        }
         return employeeRepository.findByName(name, pageable);
     }
 }

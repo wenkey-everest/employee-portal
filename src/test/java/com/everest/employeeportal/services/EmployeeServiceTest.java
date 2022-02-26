@@ -70,32 +70,25 @@ class EmployeeServiceTest {
     void UpdateAndEmployeeExistByIdTest() {
         //arrange
         given(employeeRepository.existsById(employee.getEmpId())).willReturn(true);
-        given(employeeRepository.findById(employee.getEmpId())).willReturn(Optional.of(employee));
         given(employeeRepository.save(employee)).willAnswer(invocation -> invocation.getArgument(0));
 
         //act
         Employee updateEmployee = employeeService.updateEmployee(employee, employee.getEmpId());
-        Employee  employeeById = employeeService.getEmployeeById(employee.getEmpId()).get();
 
         //assert
         assertThat(updateEmployee).isNotNull();
-        assertThat(employeeById).isNotNull();
 
         then(employeeRepository).should().save(any(Employee.class));
-        then(employeeRepository).should().findById(employee.getEmpId());
 
     }
     @Test
     void ShouldThrowErrorWhenEmployeeIdExists() {
         //arrange
         given(employeeRepository.existsById(employee.getEmpId())).willReturn(false);
-        given(employeeRepository.findById(employee.getEmpId())).willReturn(Optional.empty());
+
         //assert
         assertThrows(EmployeeNotFoundException.class, ()->{
             employeeService.updateEmployee(employee, employee.getEmpId());
-        });
-        assertThrows(EmployeeNotFoundException.class, ()->{
-            employeeService.getEmployeeById(employee.getEmpId());
         });
 
         then(employeeRepository).should(never()).save(any(Employee.class));

@@ -31,10 +31,10 @@ public class EmployeeController{
     }
     @GetMapping("/{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Long empId){
-           if(employeeService.getEmployeeById(empId).isPresent()){
-               return employeeService.getEmployeeById(empId).get();
-           }
-           throw new EmployeeNotFoundException(empId);
+        if(employeeService.getEmployeeById(empId).isPresent()) {
+            return employeeService.getEmployeeById(empId).get();
+        }
+        throw new EmployeeNotFoundException(empId);
     }
 
     @PostMapping("")
@@ -53,11 +53,9 @@ public class EmployeeController{
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
         if(employeeService.getEmployeeById(empId).isPresent()){
             employeeService.deleteEmployee(empId);
-            ApiResponse apiResponse = new ApiResponse("Deleted employee with Id  "+empId);
-            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
-        ApiResponse apiResponse = new ApiResponse("employee not found with Id "+empId);
-        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+        ApiResponse apiResponse = new ApiResponse("Employee with Id "+empId+" deleted");
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
@@ -69,12 +67,12 @@ public class EmployeeController{
 
     @ResponseStatus(HttpStatus.FOUND)
     @GetMapping("/search")
-    public ResultPage searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
+    public Object searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
         if(name.isEmpty()){
-            throw new RequiredRequestParamException();
+            return new ResponseEntity<>(RequiredRequestParamException.class, HttpStatus.NOT_FOUND);
         }
         Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
-        return new ResultPage(employeePage);
+        return new ResponseEntity<>(new ResultPage(employeePage),HttpStatus.FOUND);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.everest.employeeportal.controller;
 
 import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
-import com.everest.employeeportal.exceptions.RequiredRequestParamException;
 import com.everest.employeeportal.models.Address;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.services.EmployeeService;
@@ -25,7 +24,6 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -88,11 +86,9 @@ class EmployeeControllerTest {
 
  @Test
  void ShouldReturnNotFoundOnWhenEmployeeIsAbsent() throws Exception {
-  given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(new EmployeeNotFoundException(employee.getEmpId()));
 
   this.mockMvc.perform(get("/api/employees/{id}", employee.getEmpId())).andDo(print())
-          .andExpect(status().isNotFound())
-          .andExpect(jsonPath("$.message",is("Employee not found with Id "+employee.getEmpId())));
+          .andExpect(status().isNotFound());
  }
 
  @Test
@@ -127,19 +123,20 @@ class EmployeeControllerTest {
  @Test
  void shouldReturnBadRequestWhenEmployeeNotFoundOnUpdate() throws Exception {
 
-  given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
+  given(employeeService.updateEmployee(any(Employee.class),eq(employee.getEmpId()))).willThrow(new EmployeeNotFoundException(employee.getEmpId()));
 
-  this.mockMvc.perform(put("/api/users/{id}", employee.getEmpId())
+  this.mockMvc.perform(put("/api/employees/{id}", employee.getEmpId())
                   .contentType(MediaType.APPLICATION_JSON_VALUE)
                   .content(objectMapper.writeValueAsString(employee))).andDo(print())
-          .andExpect(status().isNotFound());
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.message",is("Employee not found with Id "+employee.getEmpId())));
 
  }
 
 
  @Test
  void ShouldDeleteEmployeeById() throws Exception {
-
+  given(employeeService.getEmployeeById(employee.getEmpId())).willReturn(Optional.of(employee));
   doNothing().when(employeeService).deleteEmployee(employee.getEmpId());
 
   mockMvc.perform(delete("/api/employees/{id}", employee.getEmpId())
@@ -149,11 +146,12 @@ class EmployeeControllerTest {
  }
  @Test
  void shouldReturn404WhenEmployeeIsNotFoundOnDelete() throws Exception {
-  given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
-  this.mockMvc.perform(delete("/api/users/{id}", employee.getEmpId()))
-          .andExpect(status().isNotFound());
+  given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(new EmployeeNotFoundException(employee.getEmpId()));
 
+  this.mockMvc.perform(delete("/api/employees/{id}", employee.getEmpId())).andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.message",is("Employee not found with Id "+employee.getEmpId())));
  }
 
  @Test
@@ -195,10 +193,9 @@ class EmployeeControllerTest {
  @Test
  void ShouldGet404WhenNameParamIsAbsent() throws Exception{
   Page<Employee> employeePage = new PageImpl<>(employeeList);
-  given(employeeService.searchEmployeeByName(eq("muni venkatesh"),any(Pageable.class))).willThrow(RequiredRequestParamException.class);
 
   mockMvc.perform(get("/api/employees/search")
-                  .content(objectMapper.writeValueAsString(employeePage.getPageable())))
+                  .content(objectMapper.writeValueAsString(employeePage.getPageable()))).andDo(print())
           .andExpect(status().isBadRequest());
 
  }

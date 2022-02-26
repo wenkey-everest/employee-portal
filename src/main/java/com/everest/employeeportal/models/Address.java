@@ -35,9 +35,8 @@ public class Address {
     private String state;
 
     @NotNull
-    @Min(6)
     @Column(name = "zipcode",nullable = false)
-    private Integer zipCode;
+    private int zipCode;
 
     @Column(name = "country", nullable = false)
     private String country;

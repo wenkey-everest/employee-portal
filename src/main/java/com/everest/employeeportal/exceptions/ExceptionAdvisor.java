@@ -30,7 +30,6 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders httpHeaders,
                                                                   HttpStatus httpStatus, WebRequest webRequest){
@@ -42,6 +41,12 @@ public class ExceptionAdvisor extends ResponseEntityExceptionHandler {
             errors.put(fieldName,errorMessage);
         });
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RequiredRequestParamException.class)
+    public ResponseEntity<Object> handleRequiredParameterException(RequiredRequestParamException ex, WebRequest webRequest){
+        ApiResponse apiResponse = new ApiResponse(ex.getMessage(), webRequest.getDescription(true));
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
 }
