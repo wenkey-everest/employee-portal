@@ -87,7 +87,7 @@ class EmployeeControllerTest {
  void ShouldReturnNotFoundOnWhenEmployeeIsAbsent() throws Exception {
   given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
-  this.mockMvc.perform(get("/api/users/{id}", employee.getEmpId()))
+  this.mockMvc.perform(get("/api/employees/{id}", employee.getEmpId()))
           .andExpect(status().isNotFound());
 
  }
@@ -128,7 +128,7 @@ class EmployeeControllerTest {
 
   given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
-  this.mockMvc.perform(put("/api/users/{id}", employee.getEmpId())
+  this.mockMvc.perform(put("/api/employees/{id}", employee.getEmpId())
                   .contentType(MediaType.APPLICATION_JSON_VALUE)
                   .content(objectMapper.writeValueAsString(employee)))
           .andExpect(status().isNotFound());
@@ -150,7 +150,7 @@ class EmployeeControllerTest {
  void shouldReturn400WhenEmployeeIsNotFound() throws Exception {
   given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
-  this.mockMvc.perform(delete("/api/users/{id}", employee.getEmpId()))
+  this.mockMvc.perform(delete("/api/employees/{id}", employee.getEmpId()))
           .andExpect(status().isNotFound());
 
  }
