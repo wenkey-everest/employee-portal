@@ -1,30 +1,27 @@
 package com.everest.employeeportal.controller;
 
-import com.everest.employeeportal.exceptions.RequiredAllParamException;
+import com.everest.employeeportal.exceptions.EmployeeNotFoundException;
+import com.everest.employeeportal.exceptions.RequiredRequestParamException;
 import com.everest.employeeportal.models.ApiResponse;
 import com.everest.employeeportal.models.Employee;
 import com.everest.employeeportal.models.ResultPage;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import com.everest.employeeportal.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.validation.BindingResult;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/employees")
-public class EmployeeController {
+public class EmployeeController{
 
     private final EmployeeService employeeService;
+
 
     @GetMapping("")
    public ResultPage getAllEmployees(Pageable pageable){
@@ -34,42 +31,48 @@ public class EmployeeController {
     }
     @GetMapping("/{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Long empId){
-            return employeeService.getEmployeeById(empId);
+           if(employeeService.getEmployeeById(empId).isPresent()){
+               return employeeService.getEmployeeById(empId).get();
+           }
+           throw new EmployeeNotFoundException(empId);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody @Validated Employee employee, BindingResult result){
-        if(result.hasErrors()){
-            throw new RequiredAllParamException();
-        }
+    public Employee createEmployee( @RequestBody @Validated Employee employee){
         return employeeService.createEmployee(employee);
     }
 
     @PutMapping("/{empId}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee(@PathVariable("empId") Long empId , @RequestBody @Validated Employee employee,
-                                   BindingResult result){
-        if(result.hasErrors()){
-            throw new RequiredAllParamException();
-        }
+    public Employee updateEmployee(@PathVariable("empId") Long empId , @Validated @RequestBody Employee employee){
         return employeeService.updateEmployee(employee, empId);
     }
 
     @DeleteMapping("/{empId}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
-        ApiResponse apiResponse = new ApiResponse(employeeService.deleteEmployee(empId), LocalDateTime.now());
+        if(employeeService.getEmployeeById(empId).isPresent()){
+            ApiResponse apiResponse = new ApiResponse("employee not found with Id "+empId);
+            return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+        }
+        employeeService.deleteEmployee(empId);
+        ApiResponse apiResponse = new ApiResponse("Deleted employee with Id  "+empId);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<Object> deleteAllEmployees(){
-        ApiResponse apiResponse = new ApiResponse(employeeService.truncateEmployeeDetails(), LocalDateTime.now());
+        employeeService.truncateEmployeeDetails();
+        ApiResponse apiResponse = new ApiResponse("Deleted all employees");
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.FOUND)
     @GetMapping("/search")
     public ResultPage searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
+        if(name.isEmpty()){
+            throw new RequiredRequestParamException();
+        }
         Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
         return new ResultPage(employeePage);
     }

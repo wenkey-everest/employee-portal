@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -13,26 +15,28 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-@Inheritance
-@DiscriminatorColumn(name = "address_type", discriminatorType = DiscriminatorType.STRING)
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "address line 1 is mandatory")
     @Column(name = "address_line_1", nullable = false)
     private String addressLine1;
 
     @Column(name = "address_line_2")
     private String addressLine2;
 
+    @NotBlank(message = "Please enter city")
     @Column(name = "city", nullable = false)
     private String city;
 
     @Column(name = "state", nullable = false)
     private String state;
 
+    @NotBlank
+    @Size(min = 6, max = 6, message = "six digit zip code is needed")
     @Column(name = "zipcode",nullable = false)
     private int zipCode;
 

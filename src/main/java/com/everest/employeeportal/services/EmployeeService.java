@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,9 +23,8 @@ public class EmployeeService {
         return employeeRepository.findAll(pageable);
     }
 
-    public Employee getEmployeeById(Long empId){
-        return employeeRepository.findById(empId)
-                .orElseThrow(EmployeeNotFoundException::new);
+    public Optional<Employee> getEmployeeById(Long empId){
+        return employeeRepository.findById(empId);
     }
 
     public Employee createEmployee(Employee employee){
@@ -40,17 +40,15 @@ public class EmployeeService {
             employee.setEmpId(empId);
             return employeeRepository.save(employee);
         }
-        throw new EmployeeNotFoundException();
+        throw new EmployeeNotFoundException(empId);
     }
 
-    public String deleteEmployee(Long empId){
-            employeeRepository.deleteById(empId);
-            return "deleted successfully";
+    public void deleteEmployee(Long empId){
+        employeeRepository.deleteById(empId);
     }
 
-    public String truncateEmployeeDetails(){
+    public void truncateEmployeeDetails(){
         employeeRepository.deleteAll();
-        return "Data is erased from the employee table";
     }
 
     public Page<Employee> searchEmployeeByName(String name, Pageable pageable){

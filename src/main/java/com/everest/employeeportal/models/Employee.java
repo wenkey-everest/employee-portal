@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Getter
 @Setter
@@ -23,7 +22,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-    @NotEmpty(message = "firstName should not be empty")
+    @NotBlank(message = "firstName should not be empty")
     @Column(name = "first_name")
     private String firstName;
 
@@ -31,40 +30,46 @@ public class Employee {
     private String lastName;
 
     @Column(name = "everest_email_id")
-    @Email(message = "Email cannot be empty")
+    @Email(message = "Email should end with everest.engineering", regexp = "^(.+)@everest.engineering$")
+    @NotBlank(message = "Everest email is required")
     private String everestEmailId;
 
-    @NotEmpty(message = "password need to be empty")
+    @NotEmpty
+    @Size(min = 8, message = "password need to be 8 char")
     @Column(name = "password")
     private String password;
 
-    @NotEmpty(message = "email id is required")
+    @Email(message = "email need to be valid", regexp = "^(.+)@(.+)$")
+    @NotBlank(message = "Personal email should be needed")
     @Column(name = "personal_email_id")
     private String personalEmailId;
 
-    @NotEmpty(message = "date of birth required")
     @Column(name = "date_of_birth")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Please provide a date.")
     private LocalDate dateOfBirth;
 
     @Column(name = "date_of_join")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Please provide a date.")
     private LocalDate dateOfJoin;
 
-    @Column(name = "designation", nullable = false)
+    @Column(name = "designation")
+    @NotBlank(message = "designation is needed")
     private String designation;
 
     @Column(name = "experience")
     private int experience;
 
-    @Column(name = "bio", nullable = false)
+    @Column(name = "bio")
     private String bio;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @NotEmpty(message = "present Id is needed")
     @JoinColumn(name = "present_address", referencedColumnName = "id")
-    private Present presentAddress;
+    private Address presentAddress;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "permanent_address", referencedColumnName = "id")
-    private Permanent permanentAddress;
+    private Address permanentAddress;
 
 }
