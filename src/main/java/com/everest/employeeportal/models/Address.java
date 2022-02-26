@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -35,10 +34,10 @@ public class Address {
     @Column(name = "state", nullable = false)
     private String state;
 
-    @NotBlank
-    @Size(min = 6, max = 6, message = "six digit zip code is needed")
+    @NotNull
+    @Min(6)
     @Column(name = "zipcode",nullable = false)
-    private int zipCode;
+    private Integer zipCode;
 
     @Column(name = "country", nullable = false)
     private String country;

@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,9 +40,9 @@ class EmployeeControllerTest {
  @Autowired
  private ObjectMapper objectMapper;
 
-
  @MockBean
  private EmployeeService employeeService;
+
 
  private  Employee employee;
 
@@ -89,7 +90,6 @@ class EmployeeControllerTest {
 
   this.mockMvc.perform(get("/api/users/{id}", employee.getEmpId()))
           .andExpect(status().isNotFound());
-
  }
 
  @Test
@@ -104,7 +104,6 @@ class EmployeeControllerTest {
           .andExpect(jsonPath("$.everestEmailId", is(employee.getEverestEmailId())))
           .andExpect(jsonPath("$.password", is(employee.getPassword())))
           .andExpect(jsonPath("$.firstName", is(employee.getFirstName())));
-
 
  }
 
@@ -124,7 +123,7 @@ class EmployeeControllerTest {
  }
 
  @Test
- void shouldReturnBadRequestWhenEmployeeNotFound() throws Exception {
+ void shouldReturnBadRequestWhenEmployeeNotFoundOnUpdate() throws Exception {
 
   given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
@@ -147,7 +146,7 @@ class EmployeeControllerTest {
 
  }
  @Test
- void shouldReturn400WhenEmployeeIsNotFound() throws Exception {
+ void shouldReturn400WhenEmployeeIsNotFoundOnDelete() throws Exception {
   given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
   this.mockMvc.perform(delete("/api/users/{id}", employee.getEmpId()))
@@ -201,5 +200,4 @@ class EmployeeControllerTest {
           .andExpect(status().isBadRequest());
 
  }
-
 }
