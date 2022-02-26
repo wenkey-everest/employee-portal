@@ -21,12 +21,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,7 +55,7 @@ class EmployeeControllerTest {
  void setUp() {
 
   employeeList = new ArrayList<>();
-  employee = new Employee(null, "muni venkatesh", "Ganji", "muni.v.g@everest.engineering", "12345678", "wenkeygm@gmail.com",
+  employee = new Employee(1L, "muni venkatesh", "Ganji", "muni.v.g@everest.engineering", "12345678", "wenkeygm@gmail.com",
           LocalDate.of(1999, 8, 14), LocalDate.of(2021, 8, 3), "software craftperson",
           0, "Its better not be pro in somethings", new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"),
           new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"));
@@ -75,7 +77,7 @@ class EmployeeControllerTest {
  @Test
  void ShouldFetchEmployeeById() throws Exception {
 
-  given(employeeService.getEmployeeById(employee.getEmpId()).get()).willReturn(employee);
+  given(employeeService.getEmployeeById(employee.getEmpId())).willReturn(Optional.of(employee));
 
   mockMvc.perform(get("/api/employees/{id}", employee.getEmpId()))
           .andExpect(status().isOk())
@@ -86,10 +88,11 @@ class EmployeeControllerTest {
 
  @Test
  void ShouldReturnNotFoundOnWhenEmployeeIsAbsent() throws Exception {
-  given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
+  given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(new EmployeeNotFoundException(employee.getEmpId()));
 
-  this.mockMvc.perform(get("/api/users/{id}", employee.getEmpId()))
-          .andExpect(status().isNotFound());
+  this.mockMvc.perform(get("/api/employees/{id}", employee.getEmpId())).andDo(print())
+          .andExpect(status().isNotFound())
+          .andExpect(jsonPath("$.message",is("Employee not found with Id "+employee.getEmpId())));
  }
 
  @Test
@@ -106,7 +109,6 @@ class EmployeeControllerTest {
           .andExpect(jsonPath("$.firstName", is(employee.getFirstName())));
 
  }
-
 
  @Test
  void ShouldUpdateEmployee() throws Exception{
@@ -129,7 +131,7 @@ class EmployeeControllerTest {
 
   this.mockMvc.perform(put("/api/users/{id}", employee.getEmpId())
                   .contentType(MediaType.APPLICATION_JSON_VALUE)
-                  .content(objectMapper.writeValueAsString(employee)))
+                  .content(objectMapper.writeValueAsString(employee))).andDo(print())
           .andExpect(status().isNotFound());
 
  }
@@ -146,7 +148,7 @@ class EmployeeControllerTest {
 
  }
  @Test
- void shouldReturn400WhenEmployeeIsNotFoundOnDelete() throws Exception {
+ void shouldReturn404WhenEmployeeIsNotFoundOnDelete() throws Exception {
   given(employeeService.getEmployeeById(employee.getEmpId())).willThrow(EmployeeNotFoundException.class);
 
   this.mockMvc.perform(delete("/api/users/{id}", employee.getEmpId()))

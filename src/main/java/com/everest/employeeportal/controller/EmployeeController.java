@@ -52,12 +52,12 @@ public class EmployeeController{
     @DeleteMapping("/{empId}")
     public ResponseEntity<Object> deleteEmployee(@PathVariable("empId") Long empId) {
         if(employeeService.getEmployeeById(empId).isPresent()){
-            ApiResponse apiResponse = new ApiResponse("employee not found with Id "+empId);
-            return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+            employeeService.deleteEmployee(empId);
+            ApiResponse apiResponse = new ApiResponse("Deleted employee with Id  "+empId);
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
-        employeeService.deleteEmployee(empId);
-        ApiResponse apiResponse = new ApiResponse("Deleted employee with Id  "+empId);
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        ApiResponse apiResponse = new ApiResponse("employee not found with Id "+empId);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("")
