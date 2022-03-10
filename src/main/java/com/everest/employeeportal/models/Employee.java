@@ -8,7 +8,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,7 +24,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
-    @NotBlank(message = "firstName should not be empty")
+//    @NotBlank(message = "firstName should not be empty")
     @Column(name = "first_name")
     private String firstName;
 
@@ -30,32 +32,32 @@ public class Employee {
     private String lastName;
 
     @Column(name = "everest_email_id")
-    @Email(message = "Email should end with everest.engineering", regexp = "^(.+)@everest.engineering$")
-    @NotBlank(message = "Everest email is required")
+//    @Email(message = "Email should end with everest.engineering", regexp = "^(.+)@everest.engineering$")
+//    @NotBlank(message = "Everest email is required")
     private String everestEmailId;
 
-    @NotEmpty
-    @Size(min = 8, message = "password need to be 8 char")
+//    @NotEmpty
+//    @Size(min = 8, message = "password need to be 8 char")
     @Column(name = "password")
     private String password;
 
-    @Email(message = "email need to be valid", regexp = "^(.+)@(.+)$")
-    @NotBlank(message = "Personal email should be needed")
+//    @Email(message = "email need to be valid", regexp = "^(.+)@(.+)$")
+//    @NotBlank(message = "Personal email should be needed")
     @Column(name = "personal_email_id")
     private String personalEmailId;
 
     @Column(name = "date_of_birth")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Please provide a date.")
-    private LocalDate dateOfBirth;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @NotNull(message = "Please provide a date.")
+    private String dateOfBirth;
 
     @Column(name = "date_of_join")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Please provide a date.")
-    private LocalDate dateOfJoin;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @NotNull(message = "Please provide a date.")
+    private String dateOfJoin;
 
     @Column(name = "designation")
-    @NotBlank(message = "designation is needed")
+//    @NotBlank(message = "designation is needed")
     private String designation;
 
     @Column(name = "experience")

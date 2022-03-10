@@ -20,21 +20,21 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "address line 1 is mandatory")
+//    @NotBlank(message = "address line 1 is mandatory")
     @Column(name = "address_line_1", nullable = false)
     private String addressLine1;
 
     @Column(name = "address_line_2")
     private String addressLine2;
 
-    @NotBlank(message = "Please enter city")
+//    @NotBlank(message = "Please enter city")
     @Column(name = "city", nullable = false)
     private String city;
 
     @Column(name = "state", nullable = false)
     private String state;
 
-    @NotNull
+//    @NotNull
     @Column(name = "zipcode",nullable = false)
     private int zipCode;
 

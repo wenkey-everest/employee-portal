@@ -30,7 +30,7 @@ class EmployeeServiceTest {
     @BeforeEach
     void setUp() {
         employee = new Employee(null, "muni venkatesh", "Ganji", "wenkeygm@gmail.com", "123456", "muni.v.g@everest.engineering",
-                LocalDate.of(1999, 8, 14), LocalDate.of(2021, 8, 3), "software craftperson",
+               "1999-8-14", "2021-8-3", "software craftperson",
                 0, "Its better not be pro in somethings", new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"),
                 new Address(null,"18-462, padma sali street",null,"venkatagiri", "andhra pradesh",524132, "India"));
         employeeRepository= Mockito.mock(EmployeeRepository.class);

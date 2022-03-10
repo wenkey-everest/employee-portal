@@ -39,13 +39,13 @@ public class EmployeeController{
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee( @RequestBody @Validated Employee employee){
+    public Employee createEmployee(@RequestBody Employee employee){
         return employeeService.createEmployee(employee);
     }
 
     @PutMapping("/{empId}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee(@PathVariable("empId") Long empId , @Validated @RequestBody Employee employee){
+    public Employee updateEmployee(@PathVariable("empId") Long empId , @RequestBody Employee employee){
         return employeeService.updateEmployee(employee, empId);
     }
 
@@ -65,14 +65,13 @@ public class EmployeeController{
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.FOUND)
     @GetMapping("/search")
     public Object searchEmployee(@RequestParam(value = "name") String name, Pageable pageable){
         if(name.isEmpty()){
             return new ResponseEntity<>(RequiredRequestParamException.class, HttpStatus.NOT_FOUND);
         }
         Page<Employee> employeePage= employeeService.searchEmployeeByName(name, pageable);
-        return new ResponseEntity<>(new ResultPage(employeePage),HttpStatus.FOUND);
+        return new ResponseEntity<>(new ResultPage(employeePage),HttpStatus.OK);
     }
 
 }
