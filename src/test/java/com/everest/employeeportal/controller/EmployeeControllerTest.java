@@ -170,7 +170,7 @@ class EmployeeControllerTest {
 
   mockMvc.perform(get("/api/employees/search")
           .content(objectMapper.writeValueAsString(employeePage.getPageable())).param("name", "Ganji"))
-          .andExpect(status().isFound())
+          .andExpect(status().isOk())
           .andExpect(jsonPath("$.data[0].firstName", is(employee.getFirstName())))
           .andExpect(jsonPath("$.data[0].everestEmailId", is(employee.getEverestEmailId())))
           .andExpect(jsonPath("$.data[0].password", is(employee.getPassword())));
@@ -183,7 +183,7 @@ class EmployeeControllerTest {
 
   mockMvc.perform(get("/api/employees/search")
                   .content(objectMapper.writeValueAsString(employeePage.getPageable())).param("name", "muni venkatesh"))
-          .andExpect(status().isFound())
+          .andExpect(status().isOk())
           .andExpect(jsonPath("$.data[0].firstName", is(employee.getFirstName())))
           .andExpect(jsonPath("$.data[0].everestEmailId", is(employee.getEverestEmailId())))
           .andExpect(jsonPath("$.data[0].password", is(employee.getPassword())));
