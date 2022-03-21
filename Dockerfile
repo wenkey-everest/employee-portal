@@ -1,8 +1,7 @@
-#DockerFile
 
 FROM openjdk:18-jdk-alpine
-COPY target/*.jar yash.jar
-ENTRYPOINT ["java", "-jar", "/yash.jar"]
+COPY target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 
 
