@@ -1,8 +1,7 @@
 version: '3'
 services:
   web:
-    build:
-      context: .
+    image: yashuyellapu/employee-portal:v1
     environment:
         SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/employee
         SPRING_DATASOURCE_USERNAME: postgres
@@ -17,9 +16,14 @@ services:
     image: postgres
     restart: always
     container_name: db
+    volumes:
+      - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: employee
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
+volumes:
+  db-data:
+
