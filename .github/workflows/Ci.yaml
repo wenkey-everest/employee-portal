@@ -12,11 +12,8 @@ jobs:
         with:
             version: "17"
       - name: Build
-        uses: actions/maven@v3
-        with:
-            goals: "clean package"
-            options:
-                "-DskipTests"
+        run: |
+          mvn clean package -DskipTests
       - name: Upload JAR
         uses: actions/upload-artifact@v2
         with:
