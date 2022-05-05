@@ -2,7 +2,18 @@ on:
   push:
     branches: "**"
 jobs:
+  spring-boot-application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: 'temurin'
+
   Create-docker-image:
+    needs: spring-boot-application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
