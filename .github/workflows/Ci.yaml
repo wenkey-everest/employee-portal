@@ -10,6 +10,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "17"
+          distribution: 'temurin'
       - name: build spring-boot-application
         run: |
           mvn clean package -DskipTests
