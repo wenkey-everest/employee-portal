@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: employeeportal
+    image: employeeportal-backend
     environment:
         SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/employee
         SPRING_DATASOURCE_USERNAME: postgres
@@ -25,7 +25,7 @@ services:
     ports:
       - 5432:5432
   react:
-    image: front-end
+    image: employeeportal-frontend
     container_name: react
     ports:
       - 3000:3000

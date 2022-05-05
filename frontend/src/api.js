@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = 'http://localhost:8080'
+const API_BASE_URL = 'http://52.12.90.48:8080'
 
 export function fetchEmployees() {
     return axios.get(`${API_BASE_URL}/api/employees`);
