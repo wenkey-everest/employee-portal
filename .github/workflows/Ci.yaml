@@ -5,19 +5,20 @@ jobs:
   spring_boot_application:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
-      - name: Install dependencies
-        uses: actions/setup-java@v3
+      - name: Login to docker hub
+        uses: dockerhub/login@v1
         with:
-          java-version: "17"
-          distribution: "temurin"
-          cache: 'maven'
-      - name: Build
-        run: |
-          mvn clean package -DskipTests
-      - name: Upload JAR
-        uses: actions/upload-artifact@v2
+          dockerhub-username: ${{secrets.DOCKER_HUB_USERNAME}}
+          dockerhub-password: ${{secrets.DOCKER_HUB_PASSWORD}}
+      - name: Build and push image
+        uses: docker/build-push-action@v2
         with:
-          name: artifact
-          path: target/employeeportal-0.0.1-SNAPSHOT.jar
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/test:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/test:buildcache,mode=max
