@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Login to docker hub
-        uses: dockerhub/login@v1
+        uses: docker/login-action@v1
         with:
           dockerhub-username: ${{secrets.DOCKER_HUB_USERNAME}}
           dockerhub-password: ${{secrets.DOCKER_HUB_PASSWORD}}
