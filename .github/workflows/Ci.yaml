@@ -3,7 +3,6 @@ on:
     branches: "**"
 jobs:
   Create-docker-image:
-    needs: spring-boot-application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
