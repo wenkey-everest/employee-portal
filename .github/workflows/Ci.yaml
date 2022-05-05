@@ -14,6 +14,12 @@ jobs:
       - name: build spring-boot-application
         run: |
           mvn clean package -DskipTests
+      - name: upload spring-boot-application
+        uses: actions/upload-artifact@v1
+        with:
+          name: spring-boot-application
+          path: target/*.jar
+          target: spring-boot-application
 
   Create-docker-image:
     needs: spring-boot-application
