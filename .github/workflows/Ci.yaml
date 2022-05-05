@@ -2,7 +2,20 @@ on:
   push:
     branches: "**"
 jobs:
-  spring_boot_application:
+  spring-boot-application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+      - name: build spring-boot-application
+        run: |
+          mvn clean package -DskipTests
+
+  Create-docker-image:
+    needs: spring-boot-application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
