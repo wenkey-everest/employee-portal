@@ -63,7 +63,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./frontend
           file: ./frontend/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
