@@ -37,6 +37,7 @@ jobs:
       - name: Change to react directory
         run: |
           cd frontend
+          ls -l
       - name: Install dependencies
         uses: actions/setup-node@v3
         with:
