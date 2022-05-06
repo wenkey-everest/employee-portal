@@ -11,10 +11,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: |
+      - name: Run mvn clean package
+        run: |
           mvn clean install -DskipTests
-          ls -l
+      - name: Run list command
+        run: |
+          ls -al
   Create-docker-image:
+    needs: Spring-boot-application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
