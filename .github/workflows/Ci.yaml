@@ -30,9 +30,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Run list command
+        run: |
+          ls -a
       - name: Build and push image
         uses: docker/build-push-action@v2
-        run: ls -a
         with:
           context: .
           builder: ${{ steps.buildx.outputs.name }}
