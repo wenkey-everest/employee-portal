@@ -85,6 +85,7 @@ jobs:
           chmod 600 private_key.pem
           ssh -i private_key.pem ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           sudo -s
+          echo "installed dependencies"
           docker-compose down
           docker-compose up -d
         shell: bash
