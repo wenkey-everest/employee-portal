@@ -85,9 +85,12 @@ jobs:
           chmod 600 private_key.pem
           ssh -i private_key.pem ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           docker-compose down
-          docker-compose up
+          docker-compose up -d
         shell: bash
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      - name: show docker containers
+        run: |
+          docker ps
 
       
