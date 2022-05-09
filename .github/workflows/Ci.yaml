@@ -81,6 +81,7 @@ jobs:
       - name: connect to ec2 server
         run: |
           echo ${{ secrets.SERVER_SSH_KEY }} >> private_key.pem && chmod 600 private_key.pem
+          ls -l 
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           sudo -s
           docker compose up -d
