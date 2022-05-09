@@ -1,7 +1,6 @@
 ---
 - name: deploy_to_aws
-  hosts: localhost
-  connection: local
+  hosts: application_server
   become: yes
   remote_user: ubuntu
   tasks:
@@ -15,8 +14,9 @@
       state: present
       update_cache: yes
   - name: Install docker
+    become: yes
     apt:
-      name: docker
+      name: docker.io
       state: present
       update_cache: yes
   - name: Install docker-compose
@@ -24,3 +24,7 @@
       url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
       dest: /usr/local/bin/docker-compose
       mode: 'u+x,g+x'
+  - name: Docker compose down
+    shell: docker-compose down
+  - name: Docker compose up
+    shell: docker-compose up -d

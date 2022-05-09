@@ -84,17 +84,16 @@ jobs:
           ls -l
           chmod 600 private_key.pem
           ssh -i private_key.pem ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
-          sudo apt install ansible
-          ansible-playbook deploy_to_aws.yml
-          sudo -s
-          echo "installed dependencies"
-          docker-compose down
-          docker-compose up -f docker-compose.yml -d
         shell: bash
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
-      - name: show docker containers
-        run: |
-          docker ps
-
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: deploy_to_aws.yml
+          directory: ./
+          key: ${{secrets.SERVER_SSH_KEY}}
+          inventory: |
+            [web]
+            application_server ansible_host=${{ secrets.REMOTE_HOST }}  ansible_user=${{ secrets.REMOTE_USER }} ansible_private_key_file=private_key.pem
       
