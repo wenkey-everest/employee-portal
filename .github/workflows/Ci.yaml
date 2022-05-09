@@ -80,7 +80,8 @@ jobs:
           TARGET: ./
       - name: connect to ec2 server
         run: |
-          ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          echo "$SERVER_SSH_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
           sudo -s
           docker compose up -d
       
