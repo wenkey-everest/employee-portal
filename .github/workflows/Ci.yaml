@@ -80,10 +80,10 @@ jobs:
           TARGET: ./
       - name: connect to ec2 server
         run: |
-        echo "$SSH_KEY" > private_key.pem
-        ls -l
-        chmod 600 private_key.pem
-        ssh -i private_key.pem ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          echo "$SSH_KEY" > private_key.pem
+          ls -l
+          chmod 600 private_key.pem
+          ssh -i private_key.pem ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
         shell: bash
         env:
           SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
