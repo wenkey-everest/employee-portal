@@ -78,6 +78,9 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ./
-      - name: deploy to ec2
+      - name: connect to ec2 server
         run: |
-          ls -l
+          ssh -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}
+          sudo -s
+          docker compose up -d
+      
