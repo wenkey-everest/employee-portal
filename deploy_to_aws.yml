@@ -1,0 +1,32 @@
+---
+-hosts: web
+  remote_user: ubuntu
+-task:
+  - name: Run apt update and apt upgrade
+    apt:
+      update_cache: yes
+      upgrade: yes
+ -name: Install git
+  apt:
+    name: git
+    state: present
+    update_cache: yes
+ -name: Install docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+ -name: Install docker-compose
+  apt:
+    name: docker-compose
+    state: present
+    update_cache: yes
+  - name: Clone private repository
+    git:
+      repo: https://wenkey-everestL:${{ GIT_PAT_TOCKEN }}github.com/wenkey-everest/employee-portal.git
+      dest: /
+      clone: yes
+  - name: Change the active directory
+    command: chdir=/employee-portal
+  - name: Run docker-compose up
+    command: docker-compose up -d
