@@ -1,8 +1,9 @@
-provider "aws" {
-  region     = "${{ secrets.AWS_REGION }}"
-  access_key = "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  secret_key = "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
+variable "aws_ami_id" {
+  description = "The ID of the AMI to use"
 }
+
+provider "aws" {}
 
 variable "key_name" {
   description = "Which is used for a name of key pair"
@@ -60,7 +61,7 @@ resource "aws_security_group" "employee-portal-security-groups" {
 }
 
 resource "aws_instance" "employee-portal" {
-  ami                    = "${{ secrets.AWS_AMI }}"
+  ami                    = var.aws_ami_id
   instance_type          = "t2.micro"
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.employee-portal-security-groups.id]
