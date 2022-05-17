@@ -1,5 +1,6 @@
 
 variable "aws_ami_id" {
+  default = "ami-0ee8244746ec5d6d4"
   description = "The ID of the AMI to use"
 }
 
