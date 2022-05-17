@@ -1,6 +1,6 @@
 ---
 - name: deploy_to_aws
-  hosts: application_server
+  hosts: localhost
   become: yes
   remote_user: ubuntu
   tasks:

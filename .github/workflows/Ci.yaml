@@ -9,8 +9,8 @@ jobs:
       - name: Install dependencies
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
       - name: Run mvn clean package
         run: |
           mvn clean install -DskipTests
@@ -41,8 +41,8 @@ jobs:
       - name: Install dependencies
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "16"
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
       - name: Run npm install
         run: |
@@ -65,34 +65,36 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/employeeportal-frontend:latest
-  deploy:
+  terraform:
     needs: [Spring-boot-application, React-application]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: deploy to ec2
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ./
-      - name: connect to ec2 server
+        uses: actions/checkout@v3
+      - name: Change directory
         run: |
-          echo "$SSH_KEY" > private_key.pem
+          cd terraform
           ls -l
-          chmod 600 private_key.pem
-        shell: bash
-        env:
-          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          playbook: deploy_to_aws.yml
-          directory: ./
-          key: ${{secrets.SERVER_SSH_KEY}}
-          inventory: |
-            [web]
-            application_server ansible_host=${{ secrets.REMOTE_HOST }}  ansible_user=${{ secrets.REMOTE_USER }} ansible_private_key_file=private_key.pem
-      
+          cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      - name: Terraform Plan
+        run: terraform plan -input=false
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
+
+
