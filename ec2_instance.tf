@@ -10,6 +10,8 @@ variable "AWS_AMI" {
 
 provider "aws" {
   region     = var.AWS_REGION
+  access_key = "AKIA3KQ7ICHH7GMZPM5X"
+  secret_key = "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"
 }
 
 variable "key_name" {
