@@ -4,10 +4,6 @@
   become: yes
   remote_user: ubuntu
   tasks:
-  - name: Run apt update and apt upgrade
-    apt:
-      update_cache: yes
-      upgrade: yes
   - name: Install git
     apt:
       name: git

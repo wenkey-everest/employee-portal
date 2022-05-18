@@ -1,3 +1,21 @@
+# terraform {
+#   required_providers {
+#     aws = {
+#       source  = "hashicorp/aws"
+#       version = "3.26.0"
+#     }
+#   }
+#   required_version = ">= 1.1.0"
+
+#   cloud {
+#     organization = "api-login"
+
+#     workspaces {
+#       name = "employee-portal"
+#     }
+#   }
+# }
+
 variable "AWS_REGION" {
   default     = "us-west-2"
   description = "The AWS region to use"
@@ -10,8 +28,6 @@ variable "AWS_AMI" {
 
 provider "aws" {
   region     = var.AWS_REGION
-  access_key = "AKIA3KQ7ICHH7GMZPM5X"
-  secret_key = "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"
 }
 
 variable "key_name" {
@@ -29,10 +45,10 @@ resource "aws_key_pair" "generated-key" {
   public_key = tls_private_key.rsa-key.public_key_openssh
 
   provisioner "local-exec" {
-    command = "echo ${tls_private_key.rsa-key.private_key_pem} > ${var.key_name}.pem"
+    command = "echo \"${tls_private_key.rsa-key.private_key_pem}\" > ${var.key_name}.pem"  
   }
   provisioner "local-exec" {
-    command = "chmod 400 ${var.key_name}.pem"
+    command = "chmod 600 ${var.key_name}.pem"
   }
 }
 
@@ -99,9 +115,14 @@ locals {
       encoding    = "b64"
       content     = filebase64("${path.root}/docker-compose.yml")
     }
-  ]
+  ],
   runcmd = [
-  "ansible-playbook deploy_to_aws.yml"]
+    "sudo -s",
+    "sudo apt update && sudo apt upgrade -y",
+    "sudo apt install -y ansible",
+    "chmod +x /home/ubuntu/deploy_to_aws.yml",
+    "ansible-playbook /home/ubuntu/deploy_to_aws.yml"
+  ]
 })}
   END
 }
