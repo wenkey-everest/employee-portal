@@ -1,5 +1,5 @@
 variable "AWS_REGION" {
-  default     = "us-east-2"
+  default     = "us-west-2"
   description = "The AWS region to use"
 }
 
