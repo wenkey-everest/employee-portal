@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.PUBLIC_IP;
+const API_BASE_URL = process.env.PUBLIC_IP_BACK_END;
 
 export function fetchEmployees() {
     return axios.get(`${API_BASE_URL}/api/employees`);

@@ -4,9 +4,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "3.26.0"
     }
-    local = {
-      source = "hashicorp/local"
-    }
   }
   required_version = ">= 1.1.0"
 
@@ -30,7 +27,8 @@ variable "AWS_AMI" {
 }
 
 provider "aws" {
-  region = var.AWS_REGION
+  region     = var.AWS_REGION
+
 }
 
 variable "key_name" {

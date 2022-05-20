@@ -3,7 +3,6 @@ on:
     branches: "**"
 jobs:
   Spring-boot-application:
-    needs: [terraform]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +36,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/employeeportal-backend:latest
   React-application:
-    needs: [terraform]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -84,7 +82,7 @@ jobs:
     defaults:
       run:
         shell: bash
-
+    needs: [Spring-boot-application,React-application]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -95,7 +93,7 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
 
       - name: Terraform Init
-        id: init
+        id: init 
         run: terraform init
 
       - name: Terraform Validate
