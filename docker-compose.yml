@@ -3,7 +3,7 @@ services:
   web:
     image: wenkey/employeeportal-backend
     environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/employee
+        SPRING_DATASOURCE_URL: jdbc:postgresql://{{ssm:public_ip}}:5432/employee
         SPRING_DATASOURCE_USERNAME: postgres
         SPRING_DATASOURCE_PASSWORD: postgres
         SPRING_JPA_HIBERNATE_DDL_AUTO: update
@@ -22,7 +22,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: employee
       POSTGRES_PASSWORD: postgres
-      PUBLIC_IP_DB: jdbc:postgresql://{{ssm:public_ip}}:5432/employee
     ports:
       - 5432:5432
   react:
