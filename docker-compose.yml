@@ -22,6 +22,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: employee
       POSTGRES_PASSWORD: postgres
+      PUBLIC_IP: {{ssm:public_ip}}
     ports:
       - 5432:5432
   react:
@@ -30,7 +31,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - PUBLIC_IP=https://{{ssm:public_ip}}:8080
+      PUBLIC_IP: https://{{ssm:public_ip}}:8080
 volumes:
   db-data:
 
