@@ -1,20 +1,20 @@
- terraform {
-   required_providers {
-     aws = {
-       source  = "hashicorp/aws"
-       version = "3.26.0"
-     }
-   }
-   required_version = ">= 1.1.0"
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "3.26.0"
+    }
+  }
+  required_version = ">= 1.1.0"
 
-   cloud {
-     organization = "api-login"
+  cloud {
+    organization = "api-login"
 
-     workspaces {
-       name = "employee-portal"
-     }
-   }
- }
+    workspaces {
+      name = "employee-portal"
+    }
+  }
+}
 
 variable "AWS_REGION" {
   default     = "us-west-2"
@@ -27,7 +27,7 @@ variable "AWS_AMI" {
 }
 
 provider "aws" {
-  region     = var.AWS_REGION
+  region = var.AWS_REGION
 }
 
 variable "key_name" {
@@ -45,7 +45,7 @@ resource "aws_key_pair" "generated-key" {
   public_key = tls_private_key.rsa-key.public_key_openssh
 
   provisioner "local-exec" {
-    command = "echo \"${tls_private_key.rsa-key.private_key_pem}\" > ${var.key_name}.pem"  
+    command = "echo \"${tls_private_key.rsa-key.private_key_pem}\" > ${var.key_name}.pem"
   }
   provisioner "local-exec" {
     command = "chmod 600 ${var.key_name}.pem"
@@ -96,6 +96,13 @@ resource "aws_instance" "employee-portal" {
   user_data = local.cloud_config_config
 }
 
+resource "aws_ssm_parameter" "secret" {
+  name        = "public_ip"
+  description = "It contains public ip of instance directly"
+  type        = "SecureString"
+  value       = aws_instance.employee-portal.public_ip
+}
+
 locals {
   cloud_config_config = <<-END
     #cloud-config
@@ -125,4 +132,4 @@ locals {
   ]
 })}
   END
-}
+} 
