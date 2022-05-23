@@ -6,12 +6,12 @@ jobs:
  tf-destroy:
    runs-on: ubuntu-latest
 
-   steps:
-     - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
-     - name: Terraform destroy
-       id: destroy
-       run: terraform destroy -auto-approved
+  steps:
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
+    - name: Terraform destroy
+      id: destroy
+      run: terraform destroy -auto-approved
     
