@@ -25,7 +25,6 @@
         state: absent
         path: /home/ubuntu/environment
     - name: Get public_ip address
-      warn: false
       shell: curl -s http://checkip.amazonaws.com
       register: PUBLIC_IP
     - name: store IP
