@@ -24,8 +24,6 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
-    networks:
-      - employeeportal
   react:
     image: wenkey/employeeportal-frontend
     container_name: react
