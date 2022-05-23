@@ -1,6 +1,6 @@
-
+name: Terraform Destroy
 on:
- workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   tf-destroy:
@@ -14,4 +14,3 @@ jobs:
       - name: Terraform destroy
         id: destroy
         run: terraform destroy -auto-approved
-    
