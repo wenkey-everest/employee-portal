@@ -30,7 +30,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      PUBLIC_IP_BACK_END: https://{{ssm:public_ip}}:8080
+      - PUBLIC_IP_BACK_END=https://{{ssm:public_ip}}:8080
 volumes:
   db-data:
 
