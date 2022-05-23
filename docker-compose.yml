@@ -28,7 +28,7 @@ services:
     image: wenkey/employeeportal-frontend
     container_name: react
     environment:
-      - PUBLIC_IP={{ssm:public_ip}}
+      - REACT_APP_PUBLIC_IP={{ssm:public_ip}}
     ports:
       - 3000:3000
 volumes:

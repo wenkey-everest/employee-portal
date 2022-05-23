@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const ENVIRONMENT_IP = process.env.PUBLIC_IP;
-
-const API_BASE_URL = "http://" + process.env.PUBLIC_IP + ":8080";
+const API_BASE_URL = "http://" + process.env.REACT_APP_PUBLIC_IP + ":8080";
 
 export function fetchEmployees() {
     return axios.get(`${API_BASE_URL}/api/employees`);
