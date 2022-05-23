@@ -6,9 +6,8 @@ function App() {
     <div>
     <nav>
       <h1 className="mt-2 mb-2 ms-2">Employee Portal</h1>
-      <h2>{process.env.PUBLIC_IP_BACK_END}</h2>
     </nav>
-   
+    <p>IP == <br/>{process.env.PUBLIC_IP_BACK_END}</p>
     <RouteNav/>
 
     </div>
