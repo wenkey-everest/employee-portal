@@ -28,9 +28,8 @@ services:
     image: wenkey/employeeportal-frontend
     container_name: react
     environment:
-      PUBLIC_IP: https://{{ssm:public_ip}}:8080
+      - PUBLIC_IP={{ssm:public_ip}}
     ports:
       - 3000:3000
 volumes:
   db-data:
-
