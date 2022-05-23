@@ -96,13 +96,6 @@ resource "aws_instance" "employee-portal" {
   user_data = local.cloud_config_config
 }
 
-resource "aws_ssm_parameter" "secret" {
-  name        = "public_ip"
-  description = "It contains public ip of instance directly"
-  type        = "SecureString"
-  value       = aws_instance.employee-portal.public_ip
-}
-
 locals {
   cloud_config_config = <<-END
     #cloud-config
@@ -110,14 +103,12 @@ locals {
   write_files = [
     {
       path        = "/home/ubuntu/deploy_to_aws.yml"
-      permissions = "600"
       owner       = "root:root"
       encoding    = "b64"
       content     = filebase64("${path.root}/deploy_to_aws.yml")
     },
     {
       path        = "/home/ubuntu/docker-compose.yml"
-      permissions = "600"
       owner       = "root:root"
       encoding    = "b64"
       content     = filebase64("${path.root}/docker-compose.yml")

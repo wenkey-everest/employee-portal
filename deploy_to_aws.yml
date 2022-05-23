@@ -4,23 +4,37 @@
   become: yes
   remote_user: ubuntu
   tasks:
-  - name: Install git
-    apt:
-      name: git
-      state: present
-      update_cache: yes
-  - name: Install docker
-    become: yes
-    apt:
-      name: docker.io
-      state: present
-      update_cache: yes
-  - name: Install docker-compose
-    get_url:
-      url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
-      dest: /usr/local/bin/docker-compose
-      mode: 'u+x,g+x'
-  - name: Docker compose down
-    shell: docker-compose down
-  - name: Docker compose up
-    shell: docker-compose up -d
+    - name: Install git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+    - name: Install docker
+      become: yes
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: "u+x,g+x"
+    - name: Remove environment file
+      file:
+        state: absent
+        path: /home/ubuntu/environment
+    - name: Get public_ip address
+      warn: false
+      shell: curl -s http://checkip.amazonaws.com
+      register: PUBLIC_IP
+    - name: store IP
+      environment:
+        IP: "{{ PUBLIC_IP.stdout }}"
+      shell: "echo AWS_IP=$IP > /home/ubuntu/.env"
+      args:
+        creates: /home/ubuntu/.env
+    - name: Docker compose down
+      shell: docker-compose down
+    - name: Docker compose up
+      shell: docker-compose up -d
