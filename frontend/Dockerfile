@@ -4,4 +4,4 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
 RUN npm i
-ENTRYPOINT ["npm", "start"]
+ENTRYPOINT ["npm", "run", "start"]

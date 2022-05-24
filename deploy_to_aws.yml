@@ -23,7 +23,7 @@
     - name: Remove environment file
       file:
         state: absent
-        path: /home/ubuntu/environment
+        path: /home/ubuntu/.env
     - name: Get public_ip address
       shell: curl -s http://checkip.amazonaws.com
       register: PUBLIC_IP
@@ -35,5 +35,5 @@
         creates: /home/ubuntu/.env
     - name: Docker compose down
       shell: docker-compose down
-    - name: Docker compose up
+    - name: Docker compose
       shell: docker-compose up -d
