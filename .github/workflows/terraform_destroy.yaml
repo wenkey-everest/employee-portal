@@ -12,5 +12,5 @@ jobs:
       - name: terraform destroy
         uses: dflook/terraform-destroy-workspace@v1
         with:
-          path: terraform
+          path: .
           workspace: ${{ github.head_ref }}
