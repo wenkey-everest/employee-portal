@@ -93,6 +93,7 @@ resource "aws_instance" "employee-portal" {
   tags = {
     Name = "employee-portal"
   }
+
   user_data = local.cloud_config_config
 }
 
