@@ -9,6 +9,8 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TF_TOKEN }}
-      - name: Terraform destroy
-        id: destroy
-        run: terraform destroy -auto-approve
+      - name: terraform destroy
+        uses: dflook/terraform-destroy-workspace@v1
+        with:
+          path: terraform
+          workspace: ${{ github.head_ref }}
